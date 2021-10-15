@@ -22,7 +22,7 @@ void Tests::TestGetValue()
 void Tests::TestSetValue()
 {
 	DateTime value;
-	value.SetDay(-5);
+	value.SetDay(1);
 	value.SetMonth(1);
 	value.SetYear(1);
 	value.SetHour(1);

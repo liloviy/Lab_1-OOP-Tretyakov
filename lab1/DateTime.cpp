@@ -4,19 +4,86 @@
 DateTime::DateTime()
 {
 	cnt++;
+	day_ = 0;
+	month_ = 0;
+	year_ = 0;
+	hour_ = 0;
+	minute_ = 0;
 }
 
 DateTime::DateTime(short value_day, short value_month, short value_year, short value_hour, short value_minute)
 {
-	if (value_day < 32 && value_month < 13 && value_hour < 25 && value_minute < 61)
+	try
 	{
-		day_ = value_day;
-		month_ = value_month;
-		year_ = value_year;
-		hour_ = value_hour;
-		minute_ = value_minute;
-		cnt++;
+		if (value_day < 32 && value_day > 0)
+			day_ = value_day;
+		else
+		{
+			day_ = 0;
+			throw exception("Day cannot be set");
+		}
 	}
+	catch(const std::exception & ex)
+	{
+		cout << ex.what() << endl;
+	}
+	try
+	{
+		if (value_month < 13 && value_month > 0)
+			month_ = value_month;
+		else
+		{
+			month_ = 0;
+			throw exception("Month cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+	try
+	{
+		if (value_year>0)
+			year_ = value_year;
+		else
+		{
+			year_ = 0;
+			throw exception("Year cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+	try
+	{
+		if (value_hour < 25 && value_hour>0)
+			hour_ = value_hour;
+		else
+		{
+			hour_ = 0;
+			throw exception("Hour cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
+	try
+	{
+		if (value_minute < 61 && value_minute>0)
+			minute_ = value_minute;
+		else
+		{
+			minute_ = 0;
+			throw exception("Minute cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}	
+	cnt++;
 }
 
 DateTime::DateTime(const DateTime& ob)
@@ -41,7 +108,21 @@ short DateTime::GetDay()
 
 void DateTime::SetDay(short value_day)
 {
-	day_ = value_day;
+	try
+	{
+		if (value_day > 0 && value_day < 32)
+		{
+			day_ = value_day;
+		}
+		else
+		{
+			throw exception("Day cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}	
 }
 
 short DateTime::GetMonth()
@@ -51,7 +132,21 @@ short DateTime::GetMonth()
 
 void DateTime::SetMonth(short value_month)
 {
-	month_ = value_month;
+	try
+	{
+		if (value_month > 0 && value_month < 13)
+		{
+			month_ = value_month;
+		}
+		else
+		{
+			throw exception("Month cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
 }
 
 short DateTime::GetYear()
@@ -61,7 +156,21 @@ short DateTime::GetYear()
 
 void DateTime::SetYear(short value_year)
 {
-	year_ = value_year;
+	try
+	{
+		if (value_year > 0)
+		{
+			year_ = value_year;
+		}
+		else
+		{
+			throw exception("Year cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
 }
 
 short DateTime::GetHour()
@@ -71,7 +180,21 @@ short DateTime::GetHour()
 
 void DateTime::SetHour(short value_hour)
 {
-	hour_ = value_hour;
+	try
+	{
+		if (value_hour > -1 && value_hour<25)
+		{
+			hour_ = value_hour;
+		}
+		else
+		{
+			throw exception("Hour cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}	
 }
 
 short DateTime::GetMinute()
@@ -81,30 +204,111 @@ short DateTime::GetMinute()
 
 void DateTime::SetMinute(short value_minute)
 {
-	minute_ = value_minute;
+	try
+	{
+		if (value_minute > -1 && value_minute < 61)
+		{
+			minute_ = value_minute;
+		}
+		else
+		{
+			throw exception("Minutes cannot be set");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		cout << ex.what() << endl;
+	}
 }
 
 short DateTime::PlusDay()
 {
 	day_++;
+	if ((month_ == 1 || month_ == 3 || month_ == 5 || month_ == 7 || month_ == 8 || month_ == 10 || month_ == 12) && day_ == 32)
+	{
+		day_ = 1;
+		if (month_ == 12)
+		{
+			year_++;
+			month_ = 1;
+		}
+		else
+			month_++;
+	}
+	if (year_ % 4 != 0 && month_ == 2 && day_ == 28)
+	{
+		day_ = 1;
+		month_++;
+	}
+	if (year_ % 4 == 0 && month_ == 2 && day_ == 29)
+	{
+		day_ = 1;
+		month_++;
+	}
+	if ((month_ == 4 || month_ == 6 || month_ == 9 || month_ == 1) && day_ == 31)
+	{
+		day_ = 1;
+		month_++;
+	}
 	return day_;
 }
 
 short DateTime::MinusDay()
 {
 	day_--;
+	if ((month_ == 12 || month_ == 10 || month_ == 7 || month_ == 5) && day_ == 0)
+	{
+		day_ = 30;
+		month_--;
+	}
+	if ((month_ == 11 || month_ == 9 || month_ == 6 || month_ == 4) && day_ == 0)
+	{
+		day_ = 31;
+		month_--;
+	}
+	if (year_ % 4 == 0 && month_ == 3 && day_ == 0)
+	{
+		day_ = 29;
+		month_--;
+	}
+	if (year_ % 4 != 0 && month_ == 3 && day_ == 0)
+	{
+		day_ = 28;
+		month_--;
+	}
+	if ((month_ == 8 || month_ == 1) && day_ == 0)
+	{
+		day_ = 31;
+		if (month_ == 1)
+		{
+			month_ = 12;
+			year_--;
+		}
+		else
+			month_--;
+	}
 	return day_;
 }
 
 short DateTime::PlusMonth()
 {
 	month_++;
+	if (month_ == 13)
+	{
+		month_ = 1;
+		year_++;
+	}
 	return month_;
 }
 
 short DateTime::MinusMonth()
 {
 	month_--;
+	if (month_ == 0)
+	{
+		month_ = 12;
+		year_--;
+	}
 	return month_;
 }
 
@@ -117,39 +321,61 @@ short DateTime::PlusYear()
 short DateTime::MinusYear()
 {
 	year_--;
+	if (year_ == 0)
+		year_ = 0;
 	return year_;
 }
 
 short DateTime::PlusHour()
 {
 	hour_++;
+	if (hour_ == 24)
+	{
+		hour_ = 0;
+		day_++;
+	}
 	return hour_;
 }
 
 short DateTime::MinusHour()
 {
 	hour_--;
+	if (hour_ == -1)
+	{
+		hour_ = 23;
+		day_--;
+	}
 	return hour_;
 }
 
 short DateTime::PlusMinute()
 {
 	minute_++;
+	if (minute_ == 61)
+	{
+		minute_ = 0;
+		hour_++;
+	}
 	return minute_;
 }
 
 short DateTime::MinusMinute()
 {
 	minute_--;
+	if (minute_ == -1)
+	{
+		minute_ = 59;
+		hour_--;
+	}
 	return minute_;
 }
 
 char* DateTime::ToString()
 {	
 	char* string = new char[255];
-	sprintf_s(string,25,"%d.%d.%d.%d.%d",day_,month_,year_,hour_,minute_);
+	sprintf_s(string,25,"%d-%d-%d %d:%d", year_,month_, day_, hour_,minute_);
 	return string;
-	delete[] string;
 }
 
 int DateTime::cnt = 0;
+
