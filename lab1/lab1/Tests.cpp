@@ -1,6 +1,7 @@
 #include "Tests.h"
 #include "DateTime.h"
 #include <iostream>
+#include <cassert>
 using namespace std;
 
 void Tests::TestGetValue()
@@ -69,6 +70,45 @@ void Tests::TestPlusValue()
 		throw exception("Problem with plus hour");
 	if (value.PlusMinute() != value_minute)
 		throw exception("Problem with plus minute");
+}
+
+void Tests::TestPlusOb()
+{
+	DateTime value1(5, 5, 5, 5, 5);
+	DateTime value2 (1, 1, 1, 1, 1);
+	DateTime value3 = value1 + value2;
+	assert(value3.GetDay() == 6);
+	assert(value3.GetMonth() == 6);
+	assert(value3.GetYear() == 6);
+	assert(value3.GetHour() == 6);
+	assert(value3.GetMinute() == 6);
+	cout << "Tests complete"<<endl ;
+}
+
+void Tests::TestMinusOb()
+{
+	DateTime value1(5, 5, 5, 5, 5);
+	DateTime value2(1, 1, 1, 1, 1);
+	DateTime value3 = value1 - value2;
+	assert(value3.GetDay() == 4);
+	assert(value3.GetMonth() == 4);
+	assert(value3.GetYear() == 4);
+	assert(value3.GetHour() == 4);
+	assert(value3.GetMinute() == 4);
+	cout << "Tests complete"<<endl;
+}
+
+void Tests::TestEqualOb()
+{
+	DateTime value1(5, 5, 5, 5, 5);
+	DateTime value2(1, 1, 1, 1, 1);
+	DateTime value3 = value1 = value2;
+	assert(value3.GetDay() == 1);
+	assert(value3.GetMonth() == 1);
+	assert(value3.GetYear() == 1);
+	assert(value3.GetHour() == 1);
+	assert(value3.GetMinute() == 1);
+	cout << "Tests complete"<<endl;
 }
 
 

@@ -9,6 +9,7 @@ DateTime::DateTime()
 	year_ = 0;
 	hour_ = 0;
 	minute_ = 0;
+	string = ToString();
 }
 
 DateTime::DateTime(short value_day, short value_month, short value_year, short value_hour, short value_minute)
@@ -83,6 +84,7 @@ DateTime::DateTime(short value_day, short value_month, short value_year, short v
 	{
 		cout << ex.what() << endl;
 	}	
+	string = ToString();
 	cnt++;
 }
 
@@ -98,7 +100,7 @@ DateTime::DateTime(const DateTime& ob)
 
 DateTime::~DateTime()
 {
-
+	delete [] string;
 }
 
 short DateTime::GetDay()
@@ -379,3 +381,24 @@ char* DateTime::ToString()
 
 int DateTime::cnt = 0;
 
+DateTime operator + (const DateTime& ob1, const DateTime& ob2)
+{
+	DateTime tmp;
+	tmp.day_ = ob1.day_ + ob2.day_;
+	tmp.month_ = ob1.month_ + ob2.month_;
+	tmp.year_ = ob1.year_ + ob2.year_;
+	tmp.hour_ = ob1.hour_ + ob2.hour_;
+	tmp.minute_ = ob1.minute_ + ob2.minute_;
+	return CheckingRedeploymentPlus(tmp);
+};
+
+DateTime operator - (const DateTime& ob1, const DateTime& ob2)
+{
+	DateTime tmp;
+	tmp.day_ = ob1.day_ - ob2.day_;
+	tmp.month_ = ob1.month_ - ob2.month_;
+	tmp.year_ = ob1.year_ - ob2.year_;
+	tmp.hour_ = ob1.hour_ - ob2.hour_;
+	tmp.minute_ = ob1.minute_ - ob2.minute_;
+	return CheckingRedeploymentMinus(tmp);
+}

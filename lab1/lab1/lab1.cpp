@@ -19,38 +19,43 @@ istream& operator >>(istream& is, DateTime& ob)
 
 int main()
 {
-    DateTime time1(21,12,2002,22,21);
-    DateTime time2(212, 122, 20022, 222, 212);
-    fstream fd;
-    fd.open("file.txt",fstream::in | fstream::out | fstream::app);
-    try
-    {
-        if (fd.is_open())
-        {
-            /*fd << time1<<"\n";
-            fd << time2;*/
-            DateTime time;
-            fd >> time;
-            cout << time;
-            /*while (true)
-            {
-                DateTime time;
-                fd >> time;
-                if (fd.eof())
-                    break;
-                cout << time;
-            }*/
-        }
-        else
-        {
-            throw exception("Can not open file");
-        }
-    }
-    catch (const std::exception& ex)
-    {
-        cout << ex.what() << endl;
-    }
-    fd.close();
+    DateTime t1(2, 3, 4, 5, 6);
+    cout << t1<<endl;
+    Tests test=Tests();
+
+    test.TestPlusOb();
+    test.TestMinusOb();
+    test.TestEqualOb();
+    //fstream fd;
+    //fd.open("file.txt",fstream::in | fstream::out | fstream::app);
+    //try
+    //{
+    //    if (fd.is_open())
+    //    {
+    //        /*fd << time1<<"\n";
+    //        fd << time2;*/
+    //        DateTime time;
+    //        fd >> time;
+    //        cout << time;
+    //        /*while (true)
+    //        {
+    //            DateTime time;
+    //            fd >> time;
+    //            if (fd.eof())
+    //                break;
+    //            cout << time;
+    //        }*/
+    //    }
+    //    else
+    //    {
+    //        throw exception("Can not open file");
+    //    }
+    //}
+    //catch (const std::exception& ex)
+    //{
+    //    cout << ex.what() << endl;
+    //}
+    //fd.close();
     cin.get();
     return 0;
 }

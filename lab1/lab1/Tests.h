@@ -8,4 +8,7 @@ public:
 	void TestSetValue();
 	void TestMinusValue();
 	void TestPlusValue();	
+	void TestPlusOb();
+	void TestMinusOb();
+	void TestEqualOb();
 };

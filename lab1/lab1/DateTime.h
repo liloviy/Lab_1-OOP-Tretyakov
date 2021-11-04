@@ -32,36 +32,12 @@ public:
 	short PlusMinute();
 	short MinusMinute();
 	char* ToString();
-	DateTime& operator = (const DateTime& ob)
+	friend DateTime CheckingRedeploymentPlus(DateTime& tmp)
 	{
-		day_ = ob.day_;
-		month_ = ob.month_;
-		year_ = ob.year_;
-		hour_ = ob.hour_;
-		minute_ = ob.minute_;
-		cnt++;
-		return *this;
-	};
-	DateTime operator + (const DateTime& ob)
-	{
-		DateTime tmp;
-		tmp.day_ = this->day_ + ob.day_;
-		tmp.month_ = this->month_ + ob.month_;
-		tmp.year_ = this->year_ + ob.year_;
-		tmp.hour_ = this->hour_ + ob.hour_;
-		tmp.minute_ = this->minute_ + ob.minute_;
 		if (tmp.minute_ > 60)
 		{
-			if (tmp.minute_ == 120)
-			{
-				tmp.hour_ += 2;
-				tmp.minute_ = 0;
-			}
-			else
-			{
-				tmp.hour_++;
-				tmp.minute_ = tmp.minute_ % 60;
-			}
+			tmp.hour_++;
+			tmp.minute_ = tmp.minute_ % 60;
 		}
 		if (tmp.hour_ > 24)
 		{
@@ -104,14 +80,8 @@ public:
 		}
 		return tmp;
 	};
-	DateTime operator - (const DateTime& ob)
+	friend DateTime CheckingRedeploymentMinus(DateTime& tmp)
 	{
-		DateTime tmp;
-		tmp.day_ = this->day_ - ob.day_;
-		tmp.month_ = this->month_ - ob.month_;
-		tmp.year_ = this->year_ - ob.year_;
-		tmp.hour_ = this->hour_ - ob.hour_;
-		tmp.minute_ = this->minute_ - ob.minute_;
 		if (tmp.minute_ < 0)
 		{
 			tmp.minute_ = 60 - abs(tmp.minute_);
@@ -138,6 +108,55 @@ public:
 		}
 		return tmp;
 	}
+	DateTime& operator = (const DateTime& ob)
+	{
+		day_ = ob.day_;
+		month_ = ob.month_;
+		year_ = ob.year_;
+		hour_ = ob.hour_;
+		minute_ = ob.minute_;
+		for (int i = 0; i<16; i++)
+			string[i] = ob.string[i];
+		return *this;
+	};
+	friend DateTime operator + (const DateTime& ob1, const DateTime& ob2);
+	DateTime operator + (int hour)
+	{
+		DateTime tmp;
+		tmp.day_ = this->day_;
+		tmp.month_ = this->month_;
+		tmp.year_ = this->year_;
+		tmp.hour_ = this->hour_;
+		tmp.minute_ = this->minute_;
+		tmp.year_ += hour / 8760;
+		hour = hour % 8760;
+		tmp.month_ += hour / 730;
+		hour = hour % 730;
+		tmp.day_ += hour / 24;
+		hour = hour % 24;
+		return CheckingRedeploymentPlus(tmp);
+	};
+	friend DateTime operator - (const DateTime& ob1, const DateTime& ob2);
+	DateTime operator - (int hour)
+	{
+		DateTime tmp;
+		tmp.day_ = this->day_ - hour;
+		tmp.month_ = this->month_ - hour;
+		tmp.year_ = this->year_ - hour;
+		tmp.hour_ = this->hour_ - hour;
+		tmp.minute_ = this->minute_ - hour;
+		tmp.year_ += hour / 8760;
+		hour = hour % 8760;
+		tmp.month_ += hour / 730;
+		hour = hour % 730;
+		tmp.day_ += hour / 24;
+		hour = hour % 24;
+		return CheckingRedeploymentMinus(tmp);
+	}
+	operator char*()
+	{
+		return ToString();
+	};
 	friend ostream& operator <<(ostream& os, const DateTime& ob);
 	friend istream& operator >>(istream& is, DateTime& ob);
 private:
@@ -146,5 +165,6 @@ private:
 	short year_;
 	short hour_;
 	short minute_;
+	char* string;
 };
 
