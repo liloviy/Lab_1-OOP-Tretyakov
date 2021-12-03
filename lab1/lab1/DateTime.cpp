@@ -96,6 +96,7 @@ DateTime::DateTime(const DateTime& ob)
 	hour_ = ob.hour_;
 	minute_ = ob.minute_;
 	cnt++;
+	string = ToString();
 };
 
 DateTime::~DateTime()
@@ -401,4 +402,34 @@ DateTime operator - (const DateTime& ob1, const DateTime& ob2)
 	tmp.hour_ = ob1.hour_ - ob2.hour_;
 	tmp.minute_ = ob1.minute_ - ob2.minute_;
 	return CheckingRedeploymentMinus(tmp);
+}
+
+void DateTime::WriteInFile(ofstream& out, DateTime& tmp)
+{
+	int tmp_day = tmp.GetDay();
+	int tmp_month = tmp.GetMonth();
+	int tmp_year = tmp.GetYear();
+	int tmp_hour = tmp.GetHour();
+	int tmp_minute = tmp.GetMinute();
+	out.write((char*)&tmp_day,4);
+	out.write((char*)&tmp_month, 4);
+	out.write((char*)&tmp_year, 4);
+	out.write((char*)&tmp_hour, 4);
+	out.write((char*)&tmp_minute, 4);
+}
+
+DateTime DateTime::ReadForFile(ifstream& in, DateTime& tmp)
+{
+	int tmp_day = 0, tmp_month = 0, tmp_year = 0, tmp_hour = 0, tmp_minute = 0;
+	in.read((char*)&tmp_day, 4);
+	in.read((char*)&tmp_month, 4);
+	in.read((char*)&tmp_year, 4);
+	in.read((char*)&tmp_hour, 4);
+	in.read((char*)&tmp_minute, 4);
+	tmp.SetDay(tmp_day);
+	tmp.SetMonth(tmp_month);
+	tmp.SetYear(tmp_year);
+	tmp.SetHour(tmp_hour);
+	tmp.SetMinute(tmp_minute);
+	return tmp;
 }
