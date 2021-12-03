@@ -159,6 +159,8 @@ public:
 	};
 	friend ostream& operator <<(ostream& os, const DateTime& ob);
 	friend istream& operator >>(istream& is, DateTime& ob);
+	void WriteInFile(ofstream& out, DateTime& tmp);
+	DateTime ReadForFile(ifstream& in, DateTime& tmp);
 private:
 	short day_;
 	short month_;

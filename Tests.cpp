@@ -128,3 +128,44 @@ void Tests::TestSetEvent()
 	assert(strcmp(name1.GetEvent(), name) == 0);
 	cout << "Tests complete" << endl;
 }
+
+void Tests::TestFile()
+{
+	DateTime value(1, 1, 1, 1, 1);
+	fstream fd;
+	fd.open("file.txt", fstream::in | fstream::out | fstream::app);;
+	{
+		fd << value;
+	}
+	fd.close();
+	DateTime value2;
+	fd.open("file.txt", fstream::in | fstream::out | fstream::app);;
+	{
+		fd >> value2;
+	}
+	fd.close();
+	assert(value.GetDay() == value2.GetDay());
+	assert(value.GetMonth() == value2.GetMonth());
+	assert(value.GetYear() == value2.GetYear());
+	assert(value.GetHour() == value2.GetHour());
+	assert(value.GetMinute() == value2.GetMinute());
+	cout << "Tests complete" << endl;
+}
+void Tests::TestFileBin()
+{
+	DateTime value(1, 1, 1, 1, 1);
+	DateTime value2;
+	ofstream out("file.dat", ios::binary | ios::out);
+	value.WriteInFile(out, value);
+	out.close();
+	
+	ifstream in("file.dat", ios::binary | ios::in);
+	value2 = value2.ReadForFile(in,value2);
+	in.close();
+	assert(value.GetDay() == value2.GetDay());
+	assert(value.GetMonth() == value2.GetMonth());
+	assert(value.GetYear() == value2.GetYear());
+	assert(value.GetHour() == value2.GetHour());
+	assert(value.GetMinute() == value2.GetMinute());
+	cout << "Tests complete" << endl;
+}

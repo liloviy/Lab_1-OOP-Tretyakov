@@ -13,4 +13,6 @@ public:
 	void TestEqualOb();
 	void TestGetEvent();
 	void TestSetEvent();
+	void TestFile();
+	void TestFileBin();
 };
