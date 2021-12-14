@@ -158,7 +158,6 @@ void Tests::TestFileBin()
 	ofstream out("file.dat", ios::binary | ios::out);
 	value.WriteInFile(out, value);
 	out.close();
-	
 	ifstream in("file.dat", ios::binary | ios::in);
 	value2 = value2.ReadForFile(in,value2);
 	in.close();
